@@ -1,105 +1,211 @@
 <!DOCTYPE html>
-<html>
-    <body>
-            <form>
-                <h1>Busca CEP</h1>
-                <input type="search" name="buscar" class="search-input" id="cep" placeholder="Digite o cep...">
-                <input type="submit" class="search" id="bs" value="Buscar">
-                <div id="res"></div>
-            </form>
-    </body>
-    <head>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Busca Cep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Ubuntu+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      margin: 0%;
+      padding: 0%;
+      box-sizing: border-box;
+    }
 
-    </head>
-    <style>
-        form {
-            background: transparent;
-            max-width: 300%;
-            width: 300px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50% -50%);
-        }
+    main {
+      display: flex;
+      flex-direction: column;
+      width: 100vw;
+      height: 100vh;
+      align-items: center;
+      background-color: #a2a2a2;
+    }
+    form {
+      background: url("https://i.pinimg.com/originals/a0/92/c8/a092c879f252462ac70e49d4b645e406.jpg")
+        no-repeat;
+      background-position: center;
+      width: 50vw;
+      height: 40vh;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      padding: 25px;
+      border-radius: 5%;
+      margin: 5% auto;
+    }
+    form h1 {
+      font-family: "Bungee Spice", cursive;
+      margin: 25px 0px 0px;
+      font-size: 3em;
+      letter-spacing: 5px;
+    }
+    form p {
+      font-family: "Bungee Spice", cursive;
+      margin: 0;
+    }
+    input {
+      margin: 25px;
+    }
 
-        #cep{
-            position: center;
-            border: none;
-            width: 50%;
-            text-align: center;
-            font-family: courier;
-        }
-        #bs {
-            position: center;
-            border: none;
-            width: 50%;
-            text-align: center;
-            font-family: courier;
-            cursor: pointer;
-        }
-    </style>
-    <script>
-        const url = "https://viacep.com.br/ws/${cep}/json/"
+    input[type="search"] {
+      height: 50px;
+      border-radius: 5px;
+      border: none;
+      text-align: center;
+    }
+    input[type="submit"] {
+      align-self: center;
+      width: 100px;
+      height: 50px;
+      border-radius: 10%;
+    }
 
-        const search_ip = getElement(".search-input"),
-        search_bt = getElement(".search-button"),
-        erro = getElement(".error-msg");
+    .tabela-hacker {
+      /* width: 40vw; */
+      background-color: #10560473;
+      padding: 25px;
+      animation: pulse 1s infinite;
+      animation-direction: alternate;
+      -webkit-animation-name: pulse;
+      animation-name: pulse;
+    }
+    .tabela-hacker th {
+      font-family: "Ubuntu Mono", monospace;
+      font-weight: 900;
+      font-size: 2em;
+      text-align: left;
+      padding: 5px;
+    }
+    .tabela-hacker td {
+      padding: 5px;
+      color: pink;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    .tabela-hacker h1 {
+      font-family: "Bungee Spice", cursive;
+      letter-spacing: 20px;
+    }
 
-        var requestCEP,
-        creat;
+    @-webkit-keyframes pulse {
+      0% {
+        -webkit-transform: scale(1);
+        -webkit-filter: brightness(100%);
+      }
+      100% {
+        -webkit-transform: scale(1.1);
+        -webkit-filter: brightness(200%);
+      }
+    }
 
-        function getElement(element) {
-            return document.querySelector(element);
-        }
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        filter: brightness(100%);
+      }
+      100% {
+        transform: scale(1.1);
+        filter: brightness(200%);
+      }
+    }
+    @media (max-width: 900px) {
+      form {
+        width: 80vw;
+        height: auto;
+      }
+      form h1{
+        font-size: 2em;
+      }
+    input[type="search"] {
+      height: 30px;
+    }
+    input[type="submit"] {
+      height: 30px;
+    }
+    .tabela-hacker {
+      width: 40vw;
+      text-align: center;
+    }
+    .tabela-hacker th {
+      font-size: 1em;
+    }
+    }
 
-        function requestCEP(usl, cep) {
-            fetch(url + cep)
-            .then(response => response.json())
-            .then(data => {
-                cep = data;
-            })
-            .catch(err => console.log(err));
-        }
+  </style>
+  <body>
+    <main>
+      <form>
+        <h1>Busca CEP</h1>
+        <p>obs: coisa de hacker</p>
+        <input
+          type="search"
+          name="buscar"
+          class="search-input"
+          id="cep_value"
+          placeholder="Digite o cep..."
+        />
+        <input type="submit" class="search-button" id="bs" value="Buscar" />
+      </form>
+      <div id="res"></div>
+    </main>
+  </body>
+  <script>
+    //Pegando campo
+    const search_field = document.querySelector("#cep_value");
+    const button = document.querySelector(".search-button");
+    const DivResult = document.querySelector("#res");
 
-        function create () {
-            creat = `
-                <div class="cep-info">
-                    <h1 class="ress">CEP: ${cep}</h1>
-                    <h1 class="logradouro"> ${logradouro}</h1>
-                    <h1 class="bairro">Bairro: ${bairro}</h1>
-                    <h1 class="localidade">Localidade: ${localidade}</h1>
-                    <h1 class="complemento">Complemento: ${complemento}</h1>
-                    <h1 class="uf">UF: ${uf}</h1>
-                    <h1 class="ddd">DDD: ${ddd}</h1>
-                </div>`
+    //Evento do botão
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const cep_value = search_field.value;
+      requestCep(cep_value);
+      createResult();
+    });
 
-                return create;
-        }
+    //Requisição
+    function requestCep(cep) {
+      const url = `https://viacep.com.br/ws/${cep}/json/`;
+      fetch(url)
+        .then((response) => response.json())
+        .then((data) => createResult(data))
+        .catch((err) => console.log(err));
+    }
 
-        function start(buscad) {
-            requestCepInfo(url, cep);
-
-            setTimeout(function () {
-                if(cep.detail) {
-                    erroMessage.style.dysplay = "block";
-                    container.style.dysplay = none;
-                } else {
-                    erroMessage.style.display = "none";
-                    conatiner.style.display = "flex";
-                    container.innerHTML = creat();
-                }
-            }, 2000);
-        }
-
-        search_bt.addEventListener('click', event => {
-            event.preventDefault();
-            search_ip = searchInput.value.toLowerCase();
-            startApp(search_ip);
-            container.classList.add('fade');
-
-            setTimeout(() => {
-                container.classList.remove('fade');
-            }, 3000)
-        });
-    </script>
+    // Cria tabela de resultado
+    function createResult(Info) {
+      const create = `
+  <table class="tabela-hacker">
+    <caption><h1>DADOS<h1></caption>
+  <tr>
+    <th>Cep</th>
+    <th>Longradouro</th>
+    <th>Complemento</th>
+    <th>Bairro</th>
+    <th>Cidade</th>
+    <th>UF</th>
+    <th>DDD</th>
+  </tr>
+  <tr>
+    <td>${Info.cep}</td>
+    <td>${Info.logradouro}</td>
+    <td>${Info.complemento}</td>
+    <td>${Info.bairro}</td>
+    <td>${Info.localidade}</td>
+    <td>${Info.uf}</td>
+    <td>${Info.ddd}</td>
+  </tr>
+</table>
+  `;
+      DivResult.innerHTML = create;
+      return DivResult;
+    }
+  </script>
 </html>
