@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <body>
+            <form>
+                <h1>Busca CEP</h1>
+                <input type="search" name="buscar" class="search-input" id="cep" placeholder="Digite o cep...">
+                <input type="submit" class="search" id="bs" value="Buscar">
+                <div id="res"></div>
+            </form>
+    </body>
+    <head>
+
+    </head>
+    <style>
+        form {
+            background: transparent;
+            max-width: 300%;
+            width: 300px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50% -50%);
+        }
+
+        #cep{
+            position: center;
+            border: none;
+            width: 50%;
+            text-align: center;
+            font-family: courier;
+        }
+        #bs {
+            position: center;
+            border: none;
+            width: 50%;
+            text-align: center;
+            font-family: courier;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        const url = "https://viacep.com.br/ws/${cep}/json/"
+
+        const search_ip = getElement(".search-input"),
+        search_bt = getElement(".search-button"),
+        erro = getElement(".error-msg");
+
+        var requestCEP,
+        creat;
+
+        function getElement(element) {
+            return document.querySelector(element);
+        }
+
+        function requestCEP(usl, cep) {
+            fetch(url + cep)
+            .then(response => response.json())
+            .then(data => {
+                cep = data;
+            })
+            .catch(err => console.log(err));
+        }
+
+        function create () {
+            creat = `
+                <div class="cep-info">
+                    <h1 class="ress">CEP: ${cep}</h1>
+                    <h1 class="logradouro"> ${logradouro}</h1>
+                    <h1 class="bairro">Bairro: ${bairro}</h1>
+                    <h1 class="localidade">Localidade: ${localidade}</h1>
+                    <h1 class="complemento">Complemento: ${complemento}</h1>
+                    <h1 class="uf">UF: ${uf}</h1>
+                    <h1 class="ddd">DDD: ${ddd}</h1>
+                </div>`
+
+                return create;
+        }
+
+        function start(buscad) {
+            requestCepInfo(url, cep);
+
+            setTimeout(function () {
+                if(cep.detail) {
+                    erroMessage.style.dysplay = "block";
+                    container.style.dysplay = none;
+                } else {
+                    erroMessage.style.display = "none";
+                    conatiner.style.display = "flex";
+                    container.innerHTML = creat();
+                }
+            }, 2000);
+        }
+
+        search_bt.addEventListener('click', event => {
+            event.preventDefault();
+            search_ip = searchInput.value.toLowerCase();
+            startApp(search_ip);
+            container.classList.add('fade');
+
+            setTimeout(() => {
+                container.classList.remove('fade');
+            }, 3000)
+        });
+    </script>
+</html>
